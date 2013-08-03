@@ -1,6 +1,6 @@
 # Reveal.js for ownCloud #
 
-### Requirements #### 
+### Requirements ###
 
 Requires ownCloud core and texteditor from at least 2013-08-03
 
