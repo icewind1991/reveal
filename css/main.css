@@ -2,6 +2,19 @@ div.thumbnail {
 	height: 144px;
 	width: 256px;
 	position: relative;
+	float: left;
+}
+
+.presentation {
+	display: inline-block;
+	margin: 10px;
+}
+
+.presentation p {
+	text-align: center;
+	font-size: 20px;
+	margin: 5px;
+	text-transform: capitalize;
 }
 
 div.thumbnail .reveal {
@@ -13,4 +26,23 @@ div.thumbnail .reveal {
 	height: 720px;
 	width: 1280px;
 	-webkit-transform: scale(0.2);
+	-webkit-transform-origin: 0 0;
+}
+
+.view {
+	z-index: 10;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+
+div.thumbnail section {
+	height: 100%;
+	padding-top: 100px;
+	text-align: center;
+	vertical-align: middle;
+	box-sizing: border-box;
 }

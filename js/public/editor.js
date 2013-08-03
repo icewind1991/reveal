@@ -1,4 +1,4 @@
-function applyPreview (editor, preview) {
+function applyPreview(editor, preview) {
 	var previewText = '';
 
 	editor.findRange = function (needle, options) {
@@ -21,13 +21,15 @@ function applyPreview (editor, preview) {
 	var showPreview = function () {
 		setTimeout(function () {
 			var text = editor.getElementText('section');
+			text = convertAllLink(text);
 			if (text !== previewText) {
 				preview.html(text);
 				Reveal.initialize({
-					controls: false,
+					controls    : false,
 					rollingLinks: false,
-					mouseWheel: true
+					mouseWheel  : true
 				});
+				Reveal.slide(0, 0, 0);
 				previewText = text;
 			}
 		}, 10);
@@ -60,6 +62,7 @@ $(document).ready(function () {
 				$.when(
 						OC.addScript('reveal', 'public/lib/head.min'),
 						OC.addScript('reveal', 'public/reveal'),
+						OC.addScript('reveal', 'public/common'),
 						OC.addScript('reveal', 'public/reveal'))
 					.then(function () {
 						applyPreview(window.aceEditor, slides);

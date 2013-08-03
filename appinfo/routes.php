@@ -46,3 +46,15 @@ $this->create('reveal_show', '/{fileid}')->action(
 		App::main('RevealController', 'show', $params, new DIContainer());
 	}
 );
+
+$this->create('reveal_get', '/get/{fileid}')->get()->action(
+	function($params){
+		App::main('RevealController', 'get', $params, new DIContainer());
+	}
+);
+
+$this->create('reveal_image', '/image/')->get()->action(
+	function($params){
+		App::main('RevealController', 'image', $params, new DIContainer());
+	}
+);

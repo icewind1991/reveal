@@ -39,7 +39,7 @@ namespace OCA\Reveal;
 	'href' => \OCP\Util::linkToRoute('reveal_index'),
 	
 	// the icon that will be shown in the navigation
-	'icon' => \OCP\Util::imagePath('apptemplateadvanced', 'example.png' ),
+	'icon' => \OCP\Util::imagePath('reveal', 'example.png' ),
 	
 	// the title of your application. This will be used in the
 	// navigation or on the settings page of your app

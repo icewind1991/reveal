@@ -26,6 +26,8 @@ namespace OCA\Reveal\Controller;
 use OC\Files\View;
 use OCA\AppFramework\Controller\Controller;
 use OCA\AppFramework\Http\NotFoundResponse;
+use OCA\AppFramework\Http\TextResponse;
+use OCA\Reveal\Http\DownloadResponse;
 
 
 class RevealController extends Controller {
@@ -52,6 +54,9 @@ class RevealController extends Controller {
 		foreach ($files as $file) {
 			$entry = array('url' => $file['path'], 'name' => $file['name'], 'size' => $file['size'], 'mtime' => $file['mtime'], 'id' => $file['fileid']);
 			$entry['preview'] = $this->extractFirstSlide($this->view->file_get_contents($file['path']));
+			$entry['title'] = substr($file['name'], 0, strpos($file['name'], '.'));
+			//cant show links in the preview
+			$entry['preview'] = str_replace(array('<a ', '</a>'), array('<span ', '</span>'), $entry['preview']);
 			$presentations[] = $entry;
 		}
 
@@ -111,5 +116,45 @@ class RevealController extends Controller {
 			'content' => $content
 		);
 		return $this->render($templateName, $params);
+	}
+
+	/**
+	 * @IsAdminExemption
+	 * @IsSubAdminExemption
+	 *
+	 * @brief renders the index page
+	 * @return an instance of a Response implementation
+	 */
+	public function get() {
+		$fileId = $this->params('fileid');
+		$path = $this->view->getPath($fileId);
+		if ($path) {
+			$content = $this->view->file_get_contents($path);
+		} else {
+			return new NotFoundResponse();
+		}
+
+		return new TextResponse($content);
+	}
+
+	/**
+	 * @CSRFExemption
+	 * @IsAdminExemption
+	 * @IsSubAdminExemption
+	 *
+	 * @brief renders the index page
+	 * @return an instance of a Response implementation
+	 */
+	public function image() {
+		$path = $_GET['path'];
+		if (!$this->view->file_exists($path)) {
+			return new NotFoundResponse();
+		}
+		$mime = $this->view->getMimeType($path);
+		if (substr($mime, 0, 5) !== 'image') {
+			return new NotFoundResponse();
+		}
+
+		return new DownloadResponse($this->view, $path, $mime);
 	}
 }

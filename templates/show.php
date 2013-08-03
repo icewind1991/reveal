@@ -1,4 +1,5 @@
 {{ script('public/reveal') }}
+{{ script('public/common') }}
 {{ script('public/show') }}
 {{ script('public/lib/head.min') }}
 {{ style('reveal') }}

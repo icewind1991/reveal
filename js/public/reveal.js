@@ -1209,7 +1209,7 @@ $(document).ready(function () {
 			// Prefer slide argument, otherwise use current slide
 			slide = slide ? slide : currentSlide;
 
-			return slide && !!slide.parentNode.nodeName.match(/section/i);
+			return slide && !! (slide.parentNode && slide.parentNode.nodeName.match(/section/i));
 
 		}
 
@@ -1835,6 +1835,7 @@ $(document).ready(function () {
 		 */
 		function readURL () {
 
+			return;
 			var hash = window.location.hash;
 
 			// Attempt to parse the hash as either an index or name
