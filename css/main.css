@@ -1,0 +1,16 @@
+div.thumbnail {
+	height: 144px;
+	width: 256px;
+	position: relative;
+}
+
+div.thumbnail .reveal {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 0;
+	left: 0;
+	height: 720px;
+	width: 1280px;
+	-webkit-transform: scale(0.2);
+}
