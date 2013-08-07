@@ -21,8 +21,10 @@ function applyPreview(editor, preview) {
 	var showPreview = function () {
 		setTimeout(function () {
 			var text = editor.getElementText('section');
-			text = convertAllLink(text);
-			if (text !== previewText) {
+			var body = new PresentationBody(text);
+			text = body.getContent();
+			console.log(text);
+			if (text !== previewText && text) {
 				preview.html(text);
 				Reveal.initialize({
 					controls    : false,

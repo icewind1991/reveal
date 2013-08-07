@@ -67,8 +67,9 @@ PresentationBody.prototype.convertLink = function (link) {
 };
 
 PresentationBody.prototype.getContent = function () {
+	var that = this;
 	return this.rawContent.replace(/(\"|\')(\/[^\'\"]+)(\"|\')/g, function (match, quote, link) {
-		return quote + convertLink(link) + quote;
+		return quote + that.convertLink(link) + quote;
 	});
 };
 
