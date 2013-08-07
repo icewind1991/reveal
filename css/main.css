@@ -3,6 +3,7 @@ div.thumbnail {
 	width: 256px;
 	position: relative;
 	float: left;
+	overflow: hidden;
 }
 
 .presentation {

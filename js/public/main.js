@@ -34,5 +34,11 @@ $(document).ready(function () {
 		el.css('background', background);
 	});
 
+	$('.thumbnail img').each(function (i, el) {
+		el = $(el);
+		var src = el.attr('src');
+		el.attr('src', PresentationBody.prototype.convertLink(src));
+	});
+
 	onHashChange();
 });
