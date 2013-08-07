@@ -27,6 +27,7 @@ use OC\Files\View;
 use OCA\AppFramework\Controller\Controller;
 use OCA\AppFramework\Http\NotFoundResponse;
 use OCA\AppFramework\Http\TextResponse;
+use OCA\Reveal\BusinessLayer\Presentations;
 use OCA\Reveal\Http\DownloadResponse;
 
 
@@ -40,33 +41,18 @@ class RevealController extends Controller {
 	private $view;
 
 	/**
+	 * @var \OCA\Reveal\BusinessLayer\Presentations $presentations
+	 */
+	private $presentations;
+
+	/**
 	 * @param Request $request: an instance of the request
 	 * @param API $api: an api wrapper instance
 	 */
 	public function __construct($api, $request) {
 		parent::__construct($api, $request);
 		$this->view = new View('/' . $this->api->getUserId() . '/files');
-	}
-
-	protected function getPresentations() {
-		$presentations = array();
-		$files = $this->view->searchByMime('text/reveal');
-		foreach ($files as $file) {
-			$entry = array('url' => $file['path'], 'name' => $file['name'], 'size' => $file['size'], 'mtime' => $file['mtime'], 'id' => $file['fileid']);
-			$entry['preview'] = $this->extractFirstSlide($this->view->file_get_contents($file['path']));
-			$entry['title'] = substr($file['name'], 0, strpos($file['name'], '.'));
-			//cant show links in the preview
-			$entry['preview'] = str_replace(array('<a ', '</a>'), array('<span ', '</span>'), $entry['preview']);
-			$presentations[] = $entry;
-		}
-
-		return $presentations;
-	}
-
-	protected function extractFirstSlide($content) {
-		$start = strpos($content, '<section');
-		$end = strpos($content, '</section>') + 10;
-		return substr($content, $start, $end - $start);
+		$this->presentations = new Presentations($this->view);
 	}
 
 
@@ -85,7 +71,7 @@ class RevealController extends Controller {
 	public function index() {
 		$templateName = 'main';
 		$params = array(
-			'presentations' => $this->getPresentations()
+			'presentations' => $this->presentations->getPresentations()
 		);
 		return $this->render($templateName, $params);
 	}
@@ -104,9 +90,9 @@ class RevealController extends Controller {
 	 */
 	public function show() {
 		$fileId = $this->params('fileid');
-		$path = $this->view->getPath($fileId);
+		$path = $this->presentations->searchById($fileId);
 		if ($path) {
-			$content = $this->view->file_get_contents($path);
+			$content = $this->presentations->getContent($path);
 		} else {
 			return new NotFoundResponse();
 		}
@@ -127,9 +113,9 @@ class RevealController extends Controller {
 	 */
 	public function get() {
 		$fileId = $this->params('fileid');
-		$path = $this->view->getPath($fileId);
+		$path = $this->presentations->searchById($fileId);
 		if ($path) {
-			$content = $this->view->file_get_contents($path);
+			$content = $this->presentations->getContent($path);
 		} else {
 			return new NotFoundResponse();
 		}
@@ -146,7 +132,7 @@ class RevealController extends Controller {
 	 * @return an instance of a Response implementation
 	 */
 	public function image() {
-		$path = $_GET['path'];
+		$path = $this->params('path');
 		if (!$this->view->file_exists($path)) {
 			return new NotFoundResponse();
 		}
