@@ -66,7 +66,7 @@ class RevealController extends Controller {
 	protected function extractFirstSlide($content) {
 		$start = strpos($content, '<section');
 		$end = strpos($content, '</section>') + 10;
-		return substr($content, $start, $end);
+		return substr($content, $start, $end - $start);
 	}
 
 
