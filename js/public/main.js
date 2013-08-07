@@ -4,9 +4,12 @@ function onHashChange() {
 	var id = window.location.hash.substr(1);
 	if (id) {
 		$.get('get/' + id).then(function (content) {
-			content = convertAllLink(content);
-			console.log(content);
-			$('.slides').html(content);
+			var body = new PresentationBody(content);
+			var title = body.getTitle();
+			if (title) {
+				document.title = title;
+			}
+			$('.slides').html(body.getContent());
 			$('.view').show();
 			initialize();
 			setTimeout(function () {
@@ -24,11 +27,10 @@ $(document).ready(function () {
 	$('section[data-background]').each(function (i, el) {
 		el = $(el);
 		var background = el.data('background');
-		background = convertLink(background);
+		background = PresentationBody.prototype.convertLink(background);
 		if (background.substr(0, 4) === 'http' || background.substr(0, 1) === '/') {
 			background = "url('" + background + "')";
 		}
-		console.log(background);
 		el.css('background', background);
 	});
 

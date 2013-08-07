@@ -55,16 +55,28 @@ function initialize() {
 	});
 }
 
-function convertLink(link) {
+function PresentationBody(content) {
+	this.rawContent = content;
+}
+
+PresentationBody.prototype.convertLink = function (link) {
 	if (link.substr(0, 1) === '/' && (link.indexOf('jpg') || link.indexOf('jpeg') || link.indexOf('bmp') || link.indexOf('bmp'))) {
 		link = OC.linkTo('', 'index.php') + '/apps/reveal/image/?path=' + encodeURIComponent(link);
 	}
 	return link;
-}
+};
 
-function convertAllLink(content) {
-	content = content.replace(/(\"|\')(\/[^\'\"]+)(\"|\')/g, function (match, quote, link) {
+PresentationBody.prototype.getContent = function () {
+	return this.rawContent.replace(/(\"|\')(\/[^\'\"]+)(\"|\')/g, function (match, quote, link) {
 		return quote + convertLink(link) + quote;
 	});
-	return content;
-}
+};
+
+PresentationBody.prototype.getTitle = function () {
+	var match = this.rawContent.match(/\<title\>(.*)\<\/title\>/);
+	if (match) {
+		return match[1];
+	} else {
+		return null;
+	}
+};
