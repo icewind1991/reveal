@@ -20,6 +20,14 @@ function applyPreview(editor, preview) {
 
 	var showPreview = function () {
 		setTimeout(function () {
+			var fullText = editor.getSession().getValue();
+			var linkText = fullText.match(/\<link[^>]*\>/)
+			if (linkText) {
+				var link = $(linkText[0]);
+				if (link && link.attr('rel') == 'stylesheet' && link.attr('href')) {
+					setStyle(link.attr('href'));
+				}
+			}
 			var text = editor.getElementText('section');
 			var body = new PresentationBody(text);
 			text = body.getContent();
@@ -61,7 +69,7 @@ $(document).ready(function () {
 				editor.css('width', '50%');
 
 				OC.addStyle('reveal', 'reveal');
-				OC.addStyle('reveal', 'theme');
+//				OC.addStyle('reveal', 'theme');
 				OC.addStyle('reveal', 'editor');
 				$.when(
 						OC.addScript('reveal', 'public/lib/head.min'),
@@ -69,6 +77,7 @@ $(document).ready(function () {
 						OC.addScript('reveal', 'public/common'),
 						OC.addScript('reveal', 'public/reveal'))
 					.then(function () {
+						setStyle('theme.css');
 						loadMathJax();
 						applyPreview(window.aceEditor, slides);
 					});

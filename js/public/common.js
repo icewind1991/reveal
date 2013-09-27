@@ -60,7 +60,7 @@ function PresentationBody(content) {
 }
 
 PresentationBody.prototype.convertLink = function (link) {
-	if (link.substr(0, 1) === '/' && (link.indexOf('jpg') || link.indexOf('jpeg') || link.indexOf('bmp') || link.indexOf('bmp'))) {
+	if (link.substr(0, 1) === '/' && (link.indexOf('jpg') || link.indexOf('jpeg') || link.indexOf('bmp') || link.indexOf('bmp') || link.indexOf('css'))) {
 		link = OC.linkTo('', 'index.php') + '/apps/reveal/image/?path=' + encodeURIComponent(link);
 	}
 	return link;
@@ -102,3 +102,19 @@ function loadMathJax(startup) {
 	}
 }
 loadMathJax.done = false;
+
+function setStyle(style) {
+	if (!setStyle.link) {
+		setStyle.link = $('<link/>');
+		setStyle.link.attr('type', 'text/css');
+		setStyle.link.attr('rel', 'stylesheet');
+		$('head').append(setStyle.link);
+	}
+	if (style.indexOf('/') == -1) {
+		style = OC.filePath('reveal', 'css', style);
+	} else if (style[0] === '/') {
+		style = PresentationBody.prototype.convertLink(style);
+	}
+	setStyle.link.attr('href', style);
+}
+setStyle.link = null;

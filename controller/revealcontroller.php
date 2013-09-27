@@ -137,7 +137,7 @@ class RevealController extends Controller {
 			return new NotFoundResponse();
 		}
 		$mime = $this->view->getMimeType($path);
-		if (substr($mime, 0, 5) !== 'image') {
+		if (substr($mime, 0, 5) !== 'image' and $mime !== 'text/css') {
 			return new NotFoundResponse();
 		}
 
