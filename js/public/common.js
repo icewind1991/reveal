@@ -115,6 +115,8 @@ function setStyle(style) {
 	} else if (style[0] === '/') {
 		style = PresentationBody.prototype.convertLink(style);
 	}
-	setStyle.link.attr('href', style);
+	if (setStyle.link.attr('href') != style) {
+		setStyle.link.attr('href', style);
+	}
 }
 setStyle.link = null;
