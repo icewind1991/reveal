@@ -95,7 +95,7 @@ function loadMathJax(startup) {
 				"});"
 		head.appendChild(script);
 
-		var path = OC.filePath('reveal', 'js', 'mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+		var path = OC.filePath('reveal', 'js', 'public/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 		//insert using native dom to prevent jquery from removing the script tag
 		head.appendChild($('<script/>').attr('src', path)[0]);
 		loadMathJax.done = true;
