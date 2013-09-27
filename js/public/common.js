@@ -81,3 +81,24 @@ PresentationBody.prototype.getTitle = function () {
 		return null;
 	}
 };
+
+function loadMathJax(startup) {
+	startup = !startup;
+	if (!loadMathJax.done) {
+		var script = document.createElement("script");
+		var head = $('head')[0]
+		script.type = "text/x-mathjax-config";
+		script[(window.opera ? "innerHTML" : "text")] =
+			"MathJax.Hub.Config({\n" +
+				"  skipStartupTypeset: " + startup + "," +
+				"  tex2jax: { inlineMath: [['$','$'], ['\\\\(','\\\\)']] }\n" +
+				"});"
+		head.appendChild(script);
+
+		var path = OC.filePath('files_markdown', 'js', 'mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+		//insert using native dom to prevent jquery from removing the script tag
+		head.appendChild($('<script/>').attr('src', path)[0]);
+		loadMathJax.done = true;
+	}
+}
+loadMathJax.done = false;

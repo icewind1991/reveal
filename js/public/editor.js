@@ -23,7 +23,6 @@ function applyPreview(editor, preview) {
 			var text = editor.getElementText('section');
 			var body = new PresentationBody(text);
 			text = body.getContent();
-			console.log(text);
 			if (text !== previewText && text) {
 				preview.html(text);
 				Reveal.initialize({
@@ -33,6 +32,9 @@ function applyPreview(editor, preview) {
 				});
 				Reveal.slide(0, 0, 0);
 				previewText = text;
+				if (window.MathJax) {
+					MathJax.Hub.Queue(["Typeset", MathJax.Hub, preview[0]]);
+				}
 			}
 		}, 10);
 	};
@@ -67,6 +69,7 @@ $(document).ready(function () {
 						OC.addScript('reveal', 'public/common'),
 						OC.addScript('reveal', 'public/reveal'))
 					.then(function () {
+						loadMathJax();
 						applyPreview(window.aceEditor, slides);
 					});
 			});

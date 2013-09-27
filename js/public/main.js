@@ -10,6 +10,9 @@ function onHashChange() {
 				document.title = title;
 			}
 			$('.slides').html(body.getContent());
+			if (window.MathJax) {
+				MathJax.Hub.Queue(["Typeset", MathJax.Hub, $('#reveal')[0]]);
+			}
 			$('.view').show();
 			initialize();
 			setTimeout(function () {
@@ -41,4 +44,5 @@ $(document).ready(function () {
 	});
 
 	onHashChange();
+	loadMathJax(true);
 });
