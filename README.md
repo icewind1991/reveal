@@ -10,7 +10,7 @@ Shows thumbnails for all revealjs files (noted by the .reveal extension) stored.
 
 ![](http://i.imgur.com/Ictos68.png)
 
-### Show presentations ### 
+### Show presentations ###
 
 ![](http://i.imgur.com/TS5JxbK.png)
 
@@ -24,6 +24,9 @@ Internal paths are noted by a leading `/`
 
 ![](http://i.imgur.com/DfaPdzU.jpg)
 
+### Embad LaTeX math and use custom themes ###
+
+![](http://i.imgur.com/3KemQNR.png)
 
  ---
  
